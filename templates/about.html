@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Braille World{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <!-- Navigation Buttons -->
+        <div class="mb-4 d-flex gap-2 flex-wrap">
+            <button onclick="history.back()" class="btn btn-outline-primary">
+                <i class="fas fa-chevron-left me-2"></i>Back
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>Back to Homepage
+            </a>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-info text-white text-center py-4">
+                        <h1 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>About Braille World
+                        </h1>
+                    </div>
+                    
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-braille fa-4x text-primary mb-3"></i>
+                        </div>
+                        
+                        <h3 class="text-center mb-4">Empowering Accessibility Through Technology</h3>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="fw-bold mb-3">Our Mission</h4>
+                                <p class="lead mb-4">
+                                    Braille World is dedicated to making digital content accessible to everyone, 
+                                    regardless of their visual abilities. We believe that technology should break down 
+                                    barriers, not create them.
+                                </p>
+                                
+                                <h4 class="fw-bold mb-3">What We Do</h4>
+                                <p class="mb-4">
+                                    Our comprehensive web application provides three essential tools for Braille conversion:
+                                </p>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="text-center">
+                                            <i class="fas fa-keyboard fa-2x text-primary mb-2"></i>
+                                            <h6 class="fw-bold">Text to Braille</h6>
+                                            <p class="small text-muted">Convert typed or spoken text to Braille with voice recognition</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="text-center">
+                                            <i class="fas fa-image fa-2x text-success mb-2"></i>
+                                            <h6 class="fw-bold">Image to Braille</h6>
+                                            <p class="small text-muted">Extract text from images using OCR and convert to Braille</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="text-center">
+                                            <i class="fas fa-camera fa-2x text-info mb-2"></i>
+                                            <h6 class="fw-bold">Braille to Text</h6>
+                                            <p class="small text-muted">Convert Braille images back to readable text</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h4 class="fw-bold mb-3">Key Features</h4>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <strong>Multi-language Support:</strong> Hindi and English text processing
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <strong>Voice Recognition:</strong> Advanced speech-to-text conversion
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <strong>Text-to-Speech:</strong> Read aloud functionality for accessibility
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <strong>OCR Technology:</strong> Extract text from images with high accuracy
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <strong>Responsive Design:</strong> Works seamlessly on all devices
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        <strong>Real-time Conversion:</strong> Live Braille conversion as you type
+                                    </li>
+                                </ul>
+                                
+                                <h4 class="fw-bold mb-3">Our Commitment</h4>
+                                <p class="mb-4">
+                                    We are committed to continuous improvement and innovation in accessibility technology. 
+                                    Our platform is designed to be user-friendly, reliable, and accessible to users of all 
+                                    technical skill levels.
+                                </p>
+                                
+                                <h4 class="fw-bold mb-3">Technology Stack</h4>
+                                <p class="mb-4">
+                                    Built with modern web technologies including Flask, Bootstrap, advanced OCR capabilities, 
+                                    and Web Speech API integration to ensure a smooth and reliable user experience.
+                                </p>
+                                
+                                <div class="text-center mt-5">
+                                    <p class="text-muted mb-0">
+                                        <em>"Technology should be a bridge to opportunity, not a barrier to access."</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

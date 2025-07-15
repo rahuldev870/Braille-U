@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Image to Braille - Braille World{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <!-- Navigation Buttons -->
+        <div class="mb-4 d-flex gap-2 flex-wrap">
+            <button onclick="history.back()" class="btn btn-outline-primary">
+                <i class="fas fa-chevron-left me-2"></i>Back
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>Back to Homepage
+            </a>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success text-white text-center py-3">
+                        <h2 class="mb-0">
+                            <i class="fas fa-image me-2"></i>Image to Braille Converter
+                        </h2>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <!-- Language Selector -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Select Language:</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="language" id="englishLang" value="english" checked>
+                                <label class="btn btn-outline-primary" for="englishLang">
+                                    <i class="fas fa-flag me-2"></i>English
+                                </label>
+                                
+                                <input type="radio" class="btn-check" name="language" id="hindiLang" value="hindi">
+                                <label class="btn btn-outline-primary" for="hindiLang">
+                                    <i class="fas fa-flag me-2"></i>हिंदी (Hindi)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Upload -->
+                        <div class="mb-4">
+                            <label for="imageInput" class="form-label fw-bold">Upload Image:</label>
+                            <div class="upload-area border-2 border-dashed rounded p-4 text-center" id="uploadArea">
+                                <input type="file" id="imageInput" class="d-none" accept="image/*">
+                                <div id="uploadPrompt">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                    <p class="mb-2">Click to upload or drag and drop</p>
+                                    <small class="text-muted">Supports: PNG, JPG, JPEG, GIF, BMP, TIFF (Max: 16MB)</small>
+                                </div>
+                                <div id="imagePreview" class="d-none">
+                                    <img id="previewImg" class="img-fluid rounded" style="max-height: 200px;">
+                                    <p class="mt-2 mb-0" id="fileName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Process Button -->
+                        <div class="text-center mb-4">
+                            <button id="processBtn" class="btn btn-success btn-lg" disabled>
+                                <i class="fas fa-cogs me-2"></i>Process Image
+                            </button>
+                        </div>
+                        
+                        <!-- Loading Spinner -->
+                        <div id="loadingSpinner" class="text-center d-none mb-4">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Processing...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Processing image... This may take a moment.</p>
+                        </div>
+                        
+                        <!-- Results Section -->
+                        <div id="resultsSection" class="d-none">
+                            <!-- Extracted Text -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Extracted Text:</label>
+                                <div id="extractedText" class="extracted-text p-3 bg-white rounded border" style="color: #212529; font-weight: 500; min-height: 80px;">
+                                    <span class="text-muted">Extracted text will appear here...</span>
+                                </div>
+                                <div class="mt-2">
+                                    <button id="readExtractedBtn" class="btn btn-outline-success" disabled>
+                                        <i class="fas fa-volume-up me-2"></i>Read Aloud
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Braille Output -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Braille Output:</label>
+                                <div id="brailleOutput" class="braille-display p-3 bg-light rounded border">
+                                </div>
+                            </div>
+                            
+                            <!-- Character Mapping -->
+                            <div id="characterMapping">
+                                <label class="form-label fw-bold">Character Mapping:</label>
+                                <div id="mappingDisplay" class="mapping-display p-3 bg-light rounded border">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Error Display -->
+                        <div id="errorDisplay" class="alert alert-danger d-none">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span id="errorMessage"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/image_to_braille.js') }}"></script>
+<script>
+// Legacy compatibility - script loaded from external file
+/*
+class ImageToBrailleConverter {
+    constructor() {
+        this.uploadArea = document.getElementById('uploadArea');
+        this.imageInput = document.getElementById('imageInput');
+        this.uploadPrompt = document.getElementById('uploadPrompt');
+        this.imagePreview = document.getElementById('imagePreview');
+        this.previewImg = document.getElementById('previewImg');
+        this.fileName = document.getElementById('fileName');
+        this.processBtn = document.getElementById('processBtn');
+        this.loadingSpinner = document.getElementById('loadingSpinner');
+        this.resultsSection = document.getElementById('resultsSection');
+        this.extractedText = document.getElementById('extractedText');
+        this.readExtractedBtn = document.getElementById('readExtractedBtn');
+        this.brailleOutput = document.getElementById('brailleOutput');
+        this.characterMapping = document.getElementById('characterMapping');
+        this.mappingDisplay = document.getElementById('mappingDisplay');
+        this.errorDisplay = document.getElementById('errorDisplay');
+        this.errorMessage = document.getElementById('errorMessage');
+        
+        this.synth = window.speechSynthesis;
+        this.selectedFile = null;
+        
+        this.initializeEvents();
+    }
+    
+    initializeEvents() {
+        // Upload area events
+        this.uploadArea.addEventListener('click', () => this.imageInput.click());
+        this.uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+        this.uploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+        
+        // File input change
+        this.imageInput.addEventListener('change', (e) => this.handleFileSelect(e));
+        
+        // Process button
+        this.processBtn.addEventListener('click', () => this.processImage());
+        
+        // Read aloud button
+        this.readExtractedBtn.addEventListener('click', () => this.readExtractedText());
+    }
+    
+    handleDragOver(e) {
+        e.preventDefault();
+        this.uploadArea.classList.add('border-primary');
+    }
+    
+    handleDrop(e) {
+        e.preventDefault();
+        this.uploadArea.classList.remove('border-primary');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            this.handleFile(files[0]);
+        }
+    }
+    
+    handleFileSelect(e) {
+        const files = e.target.files;
+        if (files.length > 0) {
+            this.handleFile(files[0]);
+        }
+    }
+    
+    handleFile(file) {
+        // Validate file type
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/tiff'];
+        if (!allowedTypes.includes(file.type)) {
+            this.showError('Invalid file type. Please upload an image file.');
+            return;
+        }
+        
+        // Validate file size (16MB)
+        if (file.size > 16 * 1024 * 1024) {
+            this.showError('File too large. Maximum size is 16MB.');
+            return;
+        }
+        
+        this.selectedFile = file;
+        this.showImagePreview(file);
+        this.processBtn.disabled = false;
+        this.hideError();
+        this.hideResults();
+    }
+    
+    showImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.previewImg.src = e.target.result;
+            this.fileName.textContent = file.name;
+            this.uploadPrompt.classList.add('d-none');
+            this.imagePreview.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    async processImage() {
+        if (!this.selectedFile) return;
+        
+        this.showLoading();
+        this.hideError();
+        this.hideResults();
+        
+        const formData = new FormData();
+        formData.append('image', this.selectedFile);
+        formData.append('language', this.getSelectedLanguage());
+        
+        try {
+            const response = await fetch('/api/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.displayResults(data);
+            } else {
+                this.showError(data.error || 'Failed to process image');
+            }
+        } catch (error) {
+            console.error('Processing error:', error);
+            this.showError('Failed to process image. Please try again.');
+        } finally {
+            this.hideLoading();
+        }
+    }
+    
+    getSelectedLanguage() {
+        const englishRadio = document.getElementById('englishLang');
+        return englishRadio.checked ? 'english' : 'hindi';
+    }
+    
+    displayResults(data) {
+        // Clear any placeholder text and display extracted text with proper styling
+        this.extractedText.innerHTML = '';
+        this.extractedText.style.color = '#212529';
+        this.extractedText.style.fontWeight = '500';
+        this.extractedText.textContent = data.extracted_text;
+        this.readExtractedBtn.disabled = false;
+        
+        // Display Braille output with enhanced visibility
+        this.brailleOutput.innerHTML = `<span class="braille-text" style="color: #007bff; font-size: 24px; font-weight: bold;">${data.braille_text}</span>`;
+        
+        // Show character mapping
+        this.displayCharacterMapping(data.extracted_text, data.braille_text);
+        
+        // Show results section
+        this.resultsSection.classList.remove('d-none');
+    }
+    
+    displayCharacterMapping(originalText, brailleText) {
+        let mappingHtml = '';
+        for (let i = 0; i < Math.min(originalText.length, brailleText.length); i++) {
+            const char = originalText[i];
+            const braille = brailleText[i];
+            mappingHtml += `
+                <div class="mapping-pair d-inline-block text-center me-3 mb-2">
+                    <div class="braille-char">${braille}</div>
+                    <div class="text-char">${char === ' ' ? '⎵' : char}</div>
+                </div>
+            `;
+        }
+        this.mappingDisplay.innerHTML = mappingHtml;
+    }
+    
+    readExtractedText() {
+        const text = this.extractedText.textContent.trim();
+        if (!text) return;
+        
+        // Stop any ongoing speech
+        this.synth.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        const language = this.getSelectedLanguage();
+        
+        // Set language for speech synthesis
+        utterance.lang = language === 'hindi' ? 'hi-IN' : 'en-US';
+        utterance.rate = 0.8;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        
+        utterance.onstart = () => {
+            this.readExtractedBtn.disabled = true;
+            this.readExtractedBtn.innerHTML = '<i class="fas fa-stop me-2"></i>Speaking...';
+        };
+        
+        utterance.onend = () => {
+            this.readExtractedBtn.disabled = false;
+            this.readExtractedBtn.innerHTML = '<i class="fas fa-volume-up me-2"></i>Read Aloud';
+        };
+        
+        this.synth.speak(utterance);
+    }
+    
+    showLoading() {
+        this.loadingSpinner.classList.remove('d-none');
+        this.processBtn.disabled = true;
+    }
+    
+    hideLoading() {
+        this.loadingSpinner.classList.add('d-none');
+        this.processBtn.disabled = false;
+    }
+    
+    showError(message) {
+        this.errorMessage.textContent = message;
+        this.errorDisplay.classList.remove('d-none');
+    }
+    
+    hideError() {
+        this.errorDisplay.classList.add('d-none');
+    }
+    
+    hideResults() {
+        this.resultsSection.classList.add('d-none');
+    }
+}
+
+*/
+</script>
+{% endblock %}

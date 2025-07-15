@@ -1,0 +1,435 @@
+/* Custom CSS for Braille World */
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Service Cards */
+.service-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    background: white;
+    height: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    border-color: #007bff;
+}
+
+.service-icon {
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1);
+}
+
+/* Feature Items */
+.feature-item {
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-3px);
+}
+
+.feature-icon {
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+/* Braille Display */
+.braille-display {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    line-height: 1.8;
+    letter-spacing: 2px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.braille-text {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Character Mapping */
+.mapping-display {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.mapping-pair {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.mapping-pair:hover {
+    background: #f8f9fa;
+    transform: scale(1.05);
+}
+
+.braille-char {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+    font-family: 'Courier New', monospace;
+}
+
+.text-char {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Upload Area */
+.upload-area {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.upload-area:hover {
+    background: #e9ecef;
+    border-color: #007bff !important;
+}
+
+.upload-area.dragover {
+    background: #e3f2fd;
+    border-color: #007bff !important;
+}
+
+/* Extracted Text Display */
+.extracted-text {
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    color: #212529;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+}
+
+/* Button Animations */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Microphone Button States */
+.btn-danger {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* Loading Spinner */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff !important;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 300px;
+        text-align: center;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 2rem;
+    }
+    
+    .braille-display {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+    
+    .mapping-pair {
+        margin-bottom: 10px;
+    }
+    
+    .service-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .braille-display {
+        font-size: 16px;
+        letter-spacing: 0.5px;
+    }
+    
+    .braille-char {
+        font-size: 20px;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 1.8rem;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Accessibility Improvements */
+.btn:focus,
+.form-control:focus,
+.btn-check:focus + .btn {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .service-card {
+        border: 2px solid #000;
+    }
+    
+    .braille-text {
+        color: #000;
+        font-weight: 900;
+    }
+    
+    .text-char {
+        background: #000;
+        color: #fff;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .hero-icon,
+    .btn,
+    .service-card,
+    .feature-item,
+    .mapping-pair {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .btn,
+    footer {
+        display: none;
+    }
+    
+    .braille-display {
+        border: 1px solid #000;
+        background: #fff;
+    }
+    
+    .mapping-display {
+        max-height: none;
+    }
+}
+
+/* Dark Mode Support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bs-body-bg: #121212;
+        --bs-body-color: #ffffff;
+    }
+}
+
+/* Custom Scrollbar */
+.mapping-display::-webkit-scrollbar,
+.extracted-text::-webkit-scrollbar {
+    width: 8px;
+}
+
+.mapping-display::-webkit-scrollbar-track,
+.extracted-text::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.mapping-display::-webkit-scrollbar-thumb,
+.extracted-text::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.mapping-display::-webkit-scrollbar-thumb:hover,
+.extracted-text::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Language Selector Styles */
+.btn-check:checked + .btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+/* Error and Success States */
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-success {
+    background-color: #d1edcc;
+    color: #155724;
+}
+
+.alert-info {
+    background-color: #cce7ff;
+    color: #004085;
+}
+
+/* Form Enhancements */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-label {
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+/* Card Enhancements */
+.card {
+    border-radius: 12px;
+    border: none;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: none;
+    font-weight: 600;
+}
+
+/* Navigation Buttons */
+.d-flex.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+/* Utility Classes */
+.text-gradient {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.shadow-hover {
+    transition: box-shadow 0.3s ease;
+}
+
+.shadow-hover:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}

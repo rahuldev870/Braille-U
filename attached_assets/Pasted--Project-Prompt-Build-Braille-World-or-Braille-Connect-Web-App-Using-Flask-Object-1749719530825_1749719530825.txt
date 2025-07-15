@@ -1,0 +1,125 @@
+ ✅ Project Prompt: Build “Braille World” or “Braille Connect” Web App (Using Flask)
+
+### 📌 Objective:
+
+Create a professional, responsive, and fully functional web app named **"Braille World"** or **"Braille Connect"**, based on the UI shown in the **three homepage screenshots** you have provided.
+The app must run using **`app.py` with Flask**, and be **deployable on Render.com**. It should be clean, error-free, and designed to impress your **internship mentor**.
+
+---
+
+## 🏠 Homepage:
+
+* The design and layout should **exactly match the first 3 screenshots**.
+* Include a section titled **“Our Services”** with the following three tools:
+
+1. **Text to Braille**
+2. **Image to Braille**
+3. **Braille Image to Text**
+* Each service card should include a **“Try It”** button that opens the corresponding tool page.
+* Add a **"Key Features"** section (simple and clean, only 4–5 features).
+* **Remove** the existing stats (10K+ Users, 25+ Languages, 99% Satisfaction, 4.9 Rating) and the **"Why Choose Braille Hub"** section.
+
+---
+
+## 🧩 Service 1: Text to Braille
+
+* When "Try It" is clicked, open a layout like in the **4th screenshot**.
+* The tool should include:
+
+* A **text input box** with a **microphone icon** next to it.
+* On clicking the mic:
+
+* Ask for **microphone permission**.
+* Start **recording voice**.
+* **Recognize** what the user says.
+* **Display the recognized text** inside the input box.
+* **Convert the recognized text to Braille**, and display the Braille output.
+* Below the box, add a **"Read Aloud"** button:
+
+* When clicked, it will **speak out** the recognized or typed text.
+* The box should also accept **typed text**.
+* As the user types or speaks:
+
+* The text and Braille output should **update live**.
+* The "Read Aloud" button should always speak the current text.
+* Refer to the **6th screenshot** as an example, but make it **fully dynamic**, not just a static "Hello".
+
+---
+
+## 🖼️ Service 2: Image to Braille
+
+* When "Try It" is clicked, open the layout like in the **7th screenshot**.
+* Add a **language selector** (Hindi / English).
+
+### When English is selected:
+
+* User uploads an image with **English text**.
+* The system should:
+
+* Use **OCR** to extract the text from the image.
+* Show the **recognized English text** in an "Extracted Text" section.
+* Add a **"Read Aloud"** button that **speaks the English text aloud**.
+* Convert the English text into **Braille Unicode**.
+* Display the Braille output as dots with each character shown below the corresponding Braille symbol.
+
+### When Hindi is selected:
+
+* The layout should switch to Hindi mode.
+* User uploads an image containing **Hindi text**.
+* The system should:
+
+* **Detect and recognize** Hindi text using OCR.
+* Display the **recognized Hindi text** in the "Extracted Text" area.
+* Add a **"Read Aloud"** button that **reads the Hindi text aloud**.
+* Convert the Hindi text into **Braille Unicode**.
+* Show Braille dots with Hindi characters shown below.
+* Only show content **related to the selected language** — do not display both languages at the same time.
+
+---
+
+## 📷 Service 3: Braille Image to Text
+
+* When "Try It" is clicked, **redirect to the external deployed tool** using this link:
+👉 [https://braille-speech-converter.onrender.com](https://braille-speech-converter.onrender.com)
+
+### What this tool does:
+
+* Users can upload an image that contains **Braille script** (Braille dots).
+* The app should:
+
+* Analyze the **Braille patterns** in the image.
+* **Recognize and convert** those Braille dots into **text**.
+* Display the extracted text.
+* Add a **"Read Aloud"** button to speak the converted text aloud.
+
+---
+
+## 🛠 Technical Requirements:
+
+* The entire project must run via a single file: **`app.py`** using **Flask**.
+* Frontend: Use **HTML/CSS/Bootstrap/JavaScript**.
+* Backend: Use **Python (Flask)** with appropriate modules.
+* Design should be **clean, responsive, and mobile-friendly**.
+* The app should include:
+
+* **Microphone access and speech recognition**
+* **Text-to-speech (read aloud)** feature
+* **Image upload with OCR**
+* **Braille conversion** (Unicode Braille symbols)
+* **Support for Hindi and English**
+* Add an **About Us** page (keep it simple — brief info about the purpose or creator).
+* Ensure there's a **“Back to Homepage”** option on all service pages.
+* Add **error handling** for file upload failures or speech recognition issues.
+* Ensure the whole app is **deployment-ready** (especially on **Render.com**).
+
+---
+
+## 🔁 Final Notes:
+
+* This web app is part of an **internship submission**, so it must be:
+
+* Visually impressive and fully functional
+* Easy to use and accessible
+* Exactly matching the design and flow shown in the screenshots
+* Clean and efficient in code and structure
+* Please make sure there are **no broken links, bugs, or placeholder features**.
