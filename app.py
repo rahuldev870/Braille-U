@@ -41,7 +41,6 @@ BRAILLE_MAP = {
 
 # Hindi Braille mapping
 HINDI_BRAILLE_MAP = {
-    # (shortened here - keep full mapping from your previous code)
     'अ': '⠁', 'आ': '⠜', 'इ': '⠊', 'ई': '⠔', 'उ': '⠥', 'ऊ': '⠳',
     ' ': '⠀', '।': '⠲', ',': '⠂', '.': '⠲', '?': '⠦', '!': '⠖'
     # Add remaining mappings...
@@ -77,6 +76,10 @@ def extract_text_from_image(image_path, language='eng'):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/text-to-braille')
 def text_to_braille_page():
@@ -145,12 +148,12 @@ def too_large(e):
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('index.html'), 404
+    return render_template('404.html'), 404
 
 @app.errorhandler(500)
 def internal_error(e):
     app.logger.error(f"Internal server error: {str(e)}")
-    return render_template('index.html'), 500
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
