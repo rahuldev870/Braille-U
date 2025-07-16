@@ -1,91 +1,115 @@
 /**
- * ✅ TextToBrailleConverter with Hindi/English Read Aloud & Microphone
- * ✅ Works on Android WebView and browser
+ * ✅ TextToBrailleConverter
+ * ✅ Google Mic for voice input (Hindi/English)
+ * ✅ Braille conversion on typing
+ * ✅ Read Aloud with Android WebView, Backend TTS, Web Speech fallback
  */
 class TextToBrailleConverter {
     constructor() {
         this.textInput = document.getElementById('textInput');
         this.readAloudBtn = document.getElementById('readAloudBtn');
-        this.micButton = document.getElementById('micButton');
+        this.micBtn = document.getElementById('micBtn');
+        this.brailleOutput = document.getElementById('brailleOutput');
         this.languageRadios = document.querySelectorAll('input[name="language"]');
         this.synth = window.speechSynthesis;
-        this.isAndroidWebView = this.detectAndroidWebView();
+        this.isAndroid = this.checkAndroidWebView();
         this.currentLanguage = 'english';
+        this.recognition = null;
 
-        this.setupLanguageSelector();
-        this.setupSpeechRecognition();
-        this.initializeEvents();
+        this.setupLanguageSwitch();
+        this.setupMic();
+        this.attachEvents();
     }
 
-    detectAndroidWebView() {
-        return typeof window.AndroidInterface !== 'undefined' &&
+    checkAndroidWebView() {
+        return typeof window.AndroidInterface !== 'undefined' && 
                typeof window.AndroidInterface.speakText === 'function';
     }
 
-    setupLanguageSelector() {
+    setupLanguageSwitch() {
         this.languageRadios.forEach(radio => {
             radio.addEventListener('change', () => {
                 this.currentLanguage = radio.value;
-                this.updateRecognitionLanguage();
+                if (this.recognition) {
+                    this.recognition.lang = this.currentLanguage === 'hindi' ? 'hi-IN' : 'en-US';
+                }
             });
         });
     }
 
-    setupSpeechRecognition() {
+    setupMic() {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             this.recognition = new SpeechRecognition();
+            this.recognition.lang = this.currentLanguage === 'hindi' ? 'hi-IN' : 'en-US';
             this.recognition.continuous = false;
-            this.recognition.interimResults = true;
-            this.updateRecognitionLanguage();
+            this.recognition.interimResults = false;
 
             this.recognition.onresult = (event) => {
-                let transcript = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    transcript += event.results[i][0].transcript;
-                }
+                const transcript = event.results[0][0].transcript.trim();
                 this.textInput.value = transcript;
-                this.convertTextToBraille();
+                this.convertToBraille(transcript);
             };
 
-            this.recognition.onerror = (e) => console.error('Microphone Error:', e.error);
+            this.recognition.onerror = (e) => {
+                console.error('Mic Error:', e.error);
+                alert('Mic error: ' + e.error);
+            };
         } else {
             console.warn('SpeechRecognition not supported.');
-            this.micButton.disabled = true;
+            this.micBtn.disabled = true;
         }
     }
 
-    updateRecognitionLanguage() {
-        if (this.recognition) {
-            this.recognition.lang = this.currentLanguage === 'hindi' ? 'hi-IN' : 'en-US';
+    attachEvents() {
+        this.textInput.addEventListener('input', () => {
+            const text = this.textInput.value.trim();
+            this.convertToBraille(text);
+        });
+
+        this.readAloudBtn.addEventListener('click', () => {
+            const text = this.textInput.value.trim();
+            if (text) this.readAloud(text);
+        });
+
+        this.micBtn.addEventListener('click', () => {
+            if (this.recognition) {
+                this.recognition.start();
+            }
+        });
+    }
+
+    convertToBraille(text) {
+        if (!text) {
+            this.brailleOutput.textContent = '';
+            return;
         }
+
+        fetch('/api/text-to-braille', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+        })
+            .then(res => res.json())
+            .then(data => {
+                this.brailleOutput.textContent = data.braille || '';
+            })
+            .catch(err => {
+                console.error('Braille API error:', err);
+                alert('Braille conversion failed.');
+            });
     }
 
-    initializeEvents() {
-        this.readAloudBtn.addEventListener('click', () => this.readAloud());
-        this.micButton.addEventListener('click', () => this.toggleMic());
-        this.textInput.addEventListener('input', () => this.convertTextToBraille());
-    }
-
-    toggleMic() {
-        if (this.recognition) {
-            this.recognition.start();
-        }
-    }
-
-    async readAloud() {
-        const text = this.textInput.value.trim();
+    async readAloud(text) {
         const langCode = this.currentLanguage === 'hindi' ? 'hi-IN' : 'en-US';
 
-        if (!text) return;
-
         // ✅ Android WebView Native TTS
-        if (this.isAndroidWebView) {
+        if (this.isAndroid) {
             try {
                 window.AndroidInterface.speakText(text, langCode);
                 return;
-            } catch (e) {
-                console.warn('Android TTS failed:', e);
+            } catch (err) {
+                console.warn('Android TTS failed:', err);
             }
         }
 
@@ -102,45 +126,16 @@ class TextToBrailleConverter {
                 await audio.play();
                 return;
             }
-        } catch (e) {
-            console.warn('Backend TTS failed:', e);
+        } catch (err) {
+            console.warn('Backend TTS failed:', err);
         }
 
-        // ✅ Web Speech API Fallback
+        // ✅ Web Speech API fallback
         if (this.synth) {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = langCode;
             this.synth.speak(utterance);
         }
-    }
-
-    convertTextToBraille() {
-        const text = this.textInput.value.trim();
-        if (!text) return;
-
-        fetch('/api/text-to-braille', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: text })
-        })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('brailleOutput').textContent = data.braille || '';
-                this.displayDetailedMapping(data.detailed_mapping || []);
-            })
-            .catch(err => console.error('Braille API error:', err));
-    }
-
-    displayDetailedMapping(mapping) {
-        const table = document.getElementById('detailedMapping');
-        table.innerHTML = '';
-        if (!mapping.length) return;
-
-        mapping.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${item.original}</td><td>${item.braille}</td>`;
-            table.appendChild(row);
-        });
     }
 }
 document.addEventListener('DOMContentLoaded', () => new TextToBrailleConverter());
